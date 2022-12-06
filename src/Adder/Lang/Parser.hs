@@ -53,7 +53,11 @@ statement = undefined
 
 -- See https://docs.python.org/3/reference/compound_stmts.html#grammar-token-python-grammar-suite
 suite :: IParser [Statement]
-suite = undefined
+suite = 
+  (choice. map try)
+   [ stmt_list,
+     statement
+   ]
 
 -- See https://docs.python.org/3/reference/compound_stmts.html#grammar-token-python-grammar-compound_stmt
 compoundStmt :: IParser Statement
