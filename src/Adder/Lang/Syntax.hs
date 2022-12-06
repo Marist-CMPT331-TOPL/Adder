@@ -16,7 +16,7 @@ newtype Program
 
 -- TODO Build out the abstract syntax for Adder statements
 data Statement
-  = whileStmt Expression [suite]
+  = WhileStmt Expression [Statement]
   deriving (Show)
 
 -- TODO Build out the abstract syntax for Adder by adding more expressions

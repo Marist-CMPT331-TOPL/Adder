@@ -52,10 +52,11 @@ statement :: IParser Statement
 statement = undefined
 
 -- See https://docs.python.org/3/reference/compound_stmts.html#grammar-token-python-grammar-suite
+-- suite ::= stmtList NEWLINE | NEWLINE INDENT statement + DEDENT
 suite :: IParser [Statement]
 suite = 
   (choice. map try)
-   [ stmt_list,
+   [ stmtList,
      statement
    ]
 
@@ -63,7 +64,11 @@ suite =
 compoundStmt :: IParser Statement
 compoundStmt =
   (choice . map try)
-    []
+    -- WhileStmt ::= assignmentExpr ":" suite
+    [WhileStmt
+      <$> (reserved "while" >> assignmentExpr)
+      <*> (reservedOp ":" >> suite)
+    ]
 
 -- See https://docs.python.org/3/reference/simple_stmts.html#grammar-token-python-grammar-simple_stmt
 simpleStmt :: IParser Statement
