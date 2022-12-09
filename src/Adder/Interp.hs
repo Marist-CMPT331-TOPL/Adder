@@ -52,6 +52,12 @@ resultOfProgram _ env st0 = undefined
 resultOf :: Statement -> Environment -> Store -> IO Store
 resultOf _ env st0 = undefined
 
+resultOf (IfStmt test conseq) p st = if q then st2 
+  where
+    Answer (BoolVal q) st1 = valueOf test p st
+    st2 = resultOf conseq p st1
+
+
 --resultOf (PassStmt) _ env st0 = env -- pass does not do anything so would env not cahgne?
 -- where
 --    env = env
@@ -59,13 +65,7 @@ resultOf _ env st0 = undefined
 -- resultOf(PassStmt) env0 = env1
 ---------------------------------------------
 -- env1 = env0
-{-
-resultOf (IfStmt test conseq) p st = if q then st2 else st3
-  where
-    Answer (BoolVal q) st1 = valueOf test p st
-    st2 = resultOf conseq p st1
-    st3 = resultOf conseq p st2
--}
+
 
 {- Evaluating a program yields an "answer" - a value and a resulting state. -}
 type Answer = (ExpVal, Store)
@@ -82,6 +82,13 @@ valueOf (BinaryExp op exp1 exp2) env st0 = valueOfBop op val1 val2
     (val2, st2) = valueOf exp2 env st1
 
 -- Don't forget about free store
+
+valueOf (IfExp exp1 exp2 exp3) p st = valueOf exp' p st1 
+  where 
+    Answer q st1  = valueOf exp1 p st 
+    exp' = case q of 
+      BoolVal True -> exp2
+      BoolVal False -> exp3
 
 --valueOF :: assignmentExpr ->  ??
 
