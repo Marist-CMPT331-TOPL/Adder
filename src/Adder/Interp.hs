@@ -51,6 +51,34 @@ resultOfProgram _ env st0 = undefined
 resultOf :: Statement -> Environment -> Store -> IO Store
 resultOf _ env st0 = undefined
 
+resultOf (AssignmentStmt x body) env st0 = return rhs enva -- need to have a parameter name for the Store on the left side
+  where
+    (addr, st1) = newref body st0
+    env1 = extendEnv x env addr-- need to provide an address that the variable is mapped to
+    x = valueOf rhs env st 0  -- valueOf takes a Store parameter also
+
+--valueOf (Return exp1) env store = env2 --Added Exp 1 into the parathenses
+--Answer Return exp1 env = exp1         --Attempted to add the return statement 
+
+-- valueOf(Return exp1)env = env1 exp2
+---------------------------------------------
+-- valueOf(exp1)env = env1 exp2
+
+--resultOf (PassStmt) _ env st0 = env -- pass does not do anything so would env not cahgne?
+-- where
+--    env = env
+
+-- resultOf(PassStmt) env0 = env1
+---------------------------------------------
+-- env1 = env0
+{-
+resultOf (IfStmt test conseq) p st = if q then st2 else st3
+  where
+    Answer (BoolVal q) st1 = valueOf test p st
+    st2 = resultOf conseq p st1
+    st3 = resultOf conseq p st2
+-}
+
 {- Evaluating a program yields an "answer" - a value and a resulting state. -}
 type Answer = (ExpVal, Store)
 
@@ -60,6 +88,20 @@ type Answer = (ExpVal, Store)
 valueOf :: Expression -> Environment -> Store -> Answer
 valueOf _ env st0 = undefined
 
+ -- need to have a parameter name for the Store on the left side
+ -- on the right side, you need to just have a pair of value and store
+valueOf (AssignmentExpr x body) env st0 = rhs st2
+  where
+    (addr, st1) = newref v st0
+    env1 = extendEnv x env addr -- need to provide an address that the variable is mapped to
+    x = valueOf rhs env st0 -- need to pass in a Store parameter here also
+
+--valueOF :: assignmentExpr ->  ??
+
+
 {- Auxiliary functions -}
 -- TODO Implement any helper functions needed to simplify the design of the
 -- interpreter (e.g., the applyProcedure helper function).
+
+
+
