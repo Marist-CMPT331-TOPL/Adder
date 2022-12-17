@@ -59,6 +59,13 @@ type Answer = (ExpVal, Store)
 -- TODO Implement the semantics for each kind of Adder expression
 valueOf :: Expression -> Environment -> Store -> Answer
 valueOf _ env st0 = undefined
+-- String literal
+valueOf (StringLiteralExp n) env = StrVal n
+-- Float literal
+valueOf (FloatLiteralExp n) _ = FloatVal n
+-- Integer literal
+valueOf (IntLiteralExp n) _ = IntVal n
+
 
 {- Auxiliary functions -}
 -- TODO Implement any helper functions needed to simplify the design of the
